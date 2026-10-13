@@ -57,15 +57,22 @@ html { scroll-behavior: smooth; }
 /* Navbar */
 .site-nav {
   position: sticky; top: 0; z-index: 50;
-  background: rgba(243, 251, 249, 0.8); backdrop-filter: blur(12px);
+  background: rgba(251, 240, 242, 0.85); backdrop-filter: blur(12px);
 }
 .site-nav .inner { display: flex; align-items: center; justify-content: space-between; height: 72px; }
 .logo-mark { font-weight: 700; font-size: 1.5rem; color: var(--ink); text-decoration: none; }
-.logo-mark span { color: var(--teal); }
+.logo-mark span { color: var(--rose); }
 .nav-links { display: flex; align-items: center; gap: 2rem; }
 .nav-links a:not(.btn-pill-fill) { color: var(--ink); text-decoration: none; font-size: 0.95rem; }
-.nav-links a.active { color: var(--teal); font-weight: 600; }
+.nav-links a.active { color: var(--rose); font-weight: 600; }
 .nav-cta { padding: 0.6rem 1.2rem; }
+.nav-cta.btn-pill-fill {
+  background: linear-gradient(135deg, var(--rose-dark), var(--rose));
+  box-shadow: 0 10px 22px rgba(196, 114, 127, 0.28);
+}
+@media (max-width: 991px) {
+  .nav-links { background: rgba(251, 240, 242, 0.97); }
+}
 .nav-toggle {
   display: none; border: none; background: transparent;
   font-size: 1.6rem; color: var(--ink);
@@ -77,6 +84,65 @@ html { scroll-behavior: smooth; }
   overflow: hidden;
   min-height: auto;
   padding: 4rem 0 4rem;
+}
+/* Fond rose du hero */
+.hero {
+  background:
+    radial-gradient(circle at 88% 10%, #ecc9cf 0, transparent 40%),
+    radial-gradient(circle at 6% 85%, #f3d9dd 0, transparent 38%),
+    var(--rose-pale);
+}
+
+.blob-1 { background: #e3b4bc; }
+.blob-2 { background: #efcdd3; }
+
+.hero-title .accent {
+  background: linear-gradient(90deg, #a85a67, #d98e9a, #a85a67);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero .btn-pill-fill {
+  background: linear-gradient(135deg, var(--rose-dark), var(--rose));
+  box-shadow: 0 10px 22px rgba(196, 114, 127, 0.28);
+}
+.hero .btn-pill-line { border-color: rgba(196, 114, 127, 0.4); }
+
+.hero-photo::before {
+  background: radial-gradient(circle, rgba(196, 114, 127, 0.3), transparent 65%);
+}
+.photo-ring { border-color: rgba(196, 114, 127, 0.55); }
+.photo-ring::after { background: var(--rose); box-shadow: 0 0 12px var(--rose); }
+
+.hero .glass-label { color: var(--rose-dark); }
+.hero .arrow-btn { color: var(--rose); border-color: rgba(196, 114, 127, 0.35); }
+.hero .glass-link:hover .arrow-btn { background: var(--rose); color: #fff; }
+/* ===== Hero : rose mat (à placer en fin de fichier) ===== */
+
+/* Nom */
+.hero .hero-title .accent {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  color: #a85a67;
+  animation: none;
+}
+/* Blobs du hero : rose mat */
+.hero .blob-1 { background: #e3b4bc; }
+.hero .blob-2 { background: #efcdd3; }
+
+/* Cercle pointillé qui tourne + point lumineux */
+.hero .photo-ring { border-color: rgba(196, 114, 127, 0.55); }
+.hero .photo-ring::after {
+  background: var(--rose);
+  box-shadow: 0 0 12px var(--rose);
+}
+
+/* Halo derrière la photo */
+.hero .hero-photo::before {
+  background: radial-gradient(circle, rgba(196, 114, 127, 0.3), transparent 65%);
 }
 
 /* Formes flottantes en arrière-plan */
@@ -500,6 +566,10 @@ html { scroll-behavior: smooth; }
   --muted: #6b8a90;
   --glass: rgba(255, 255, 255, 0.55);
   --glass-border: rgba(255, 255, 255, 0.8);
+  --rose: #c4727f;        /* rose mat principal */
+  --rose-dark: #a85a67;   /* survol / dégradé */
+  --rose-soft: #f6e4e7;   /* fond clair */
+  --rose-pale: #fbf0f2;   /* fond de page */
 }
 
 .app-bg {
@@ -1279,4 +1349,467 @@ a.contact-card:hover .contact-arrow { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .sent-check, .sent-check::after { animation: none; }
+}
+/* =========================================================
+   ANIMATIONS : NAVBAR + HOME (à placer en fin de fichier)
+   ========================================================= */
+
+/* ---------- NAVBAR ---------- */
+
+/* Entrée : la barre descend du haut */
+@keyframes navDrop {
+  from { opacity: 0; transform: translateY(-100%); }
+  to   { opacity: 1; transform: none; }
+}
+.site-nav { animation: navDrop 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+/* Logo : le point pulse, le logo se balance au survol */
+@keyframes dotPulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.6); }
+}
+.logo-mark { display: inline-block; transition: transform 0.3s; }
+.logo-mark:hover { transform: rotate(-6deg) scale(1.08); }
+.logo-mark span { display: inline-block; animation: dotPulse 2s ease-in-out infinite; }
+
+/* Liens : apparition en cascade + soulignement qui s'étire du centre */
+@keyframes linkIn {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: none; }
+}
+.nav-links > a { animation: linkIn 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.nav-links > a:nth-child(1) { animation-delay: 0.3s; }
+.nav-links > a:nth-child(2) { animation-delay: 0.4s; }
+.nav-links > a:nth-child(3) { animation-delay: 0.5s; }
+.nav-links > a:nth-child(4) { animation-delay: 0.6s; }
+.nav-links > a:nth-child(5) { animation-delay: 0.7s; }
+.nav-links > a:nth-child(6) { animation-delay: 0.85s; }
+
+.nav-links a:not(.btn-pill-fill) {
+  position: relative;
+  padding: 0.3rem 0;
+  transition: color 0.25s, transform 0.25s;
+}
+.nav-links a:not(.btn-pill-fill):hover { color: var(--rose); transform: translateY(-2px); }
+.nav-links a:not(.btn-pill-fill)::after {
+  content: "";
+  position: absolute;
+  left: 50%; bottom: -2px;
+  width: 0; height: 2px;
+  border-radius: 2px;
+  background: var(--rose);
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+.nav-links a:not(.btn-pill-fill):hover::after,
+.nav-links a.active::after { width: 100%; }
+
+/* Bouton « Me contacter » : reflet qui passe + halo qui pulse */
+@keyframes sweep {
+  0%        { left: -75%; }
+  55%, 100% { left: 130%; }
+}
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 10px 22px rgba(196, 114, 127, 0.28); }
+  50%      { box-shadow: 0 10px 34px rgba(196, 114, 127, 0.6); }
+}
+.nav-cta.btn-pill-fill {
+  position: relative;
+  overflow: hidden;
+  animation: linkIn 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) 0.85s both,
+             glowPulse 3s ease-in-out 1.6s infinite;
+}
+.nav-cta.btn-pill-fill::before {
+  content: "";
+  position: absolute; top: 0; left: -75%;
+  width: 50%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: skewX(-20deg);
+  animation: sweep 3.5s ease-in-out 1.5s infinite;
+}
+.nav-cta.btn-pill-fill:hover svg { transform: translate(3px, -3px); }
+
+/* Bouton burger (mobile) */
+.nav-toggle { transition: transform 0.3s, color 0.3s; }
+.nav-toggle:hover { color: var(--rose); transform: rotate(90deg); }
+
+/* Menu mobile : il se déroule */
+@keyframes menuIn {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: none; }
+}
+.nav-links.open { animation: menuIn 0.35s ease both; }
+
+/* ---------- HOME ---------- */
+
+/* Nom : le dégradé rose défile en continu */
+.hero .hero-title .accent {
+  background: linear-gradient(90deg, #a85a67, #e4a0ab, #a85a67);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine 5s linear infinite;
+}
+
+/* Rôle : soulignement qui se dessine */
+@keyframes drawLine { to { width: 100%; } }
+.hero-role { display: inline-block; position: relative; padding-bottom: 0.3rem; }
+.hero-role::after {
+  content: "";
+  position: absolute; left: 0; bottom: 0;
+  width: 0; height: 3px; border-radius: 3px;
+  background: linear-gradient(90deg, var(--rose-dark), var(--rose), transparent);
+  animation: drawLine 1s ease 1.3s forwards;
+}
+
+/* Boutons : reflet + flèche qui rebondit */
+@keyframes nudge {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(5px); }
+}
+.hero .btn-pill-fill { position: relative; overflow: hidden; }
+.hero .btn-pill-fill::before {
+  content: "";
+  position: absolute; top: 0; left: -75%;
+  width: 50%; height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: skewX(-20deg);
+  animation: sweep 4s ease-in-out 2s infinite;
+}
+.hero .btn-pill-fill svg { animation: nudge 1.6s ease-in-out infinite; }
+.hero .btn-pill-fill:hover svg { animation: none; }
+.hero .btn-pill-line:hover { border-color: var(--rose); box-shadow: 0 10px 22px rgba(196, 114, 127, 0.18); }
+.hero .btn-pill-line:hover svg { transform: scale(1.25) rotate(-8deg); }
+
+/* Photo : deuxième cercle qui tourne dans l'autre sens */
+.hero-photo::after {
+  content: "";
+  position: absolute; inset: -36px; z-index: 0;
+  border-radius: 50%;
+  border: 1px dotted rgba(196, 114, 127, 0.45);
+  animation: spin 45s linear infinite reverse;
+}
+@media (max-width: 991px) { .hero-photo::after { display: none; } }
+
+/* Carte CV : l'icône de téléchargement rebondit */
+@keyframes downBounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(4px); }
+}
+.glass-link .arrow-btn svg { animation: downBounce 1.8s ease-in-out infinite; }
+.glass-link:hover .arrow-btn svg { animation: none; }
+.glass-link .arrow-btn { transition: background 0.25s, color 0.25s, transform 0.25s; }
+.glass-link:hover .arrow-btn { transform: scale(1.12); }
+
+/* Formes décoratives qui flottent dans le fond */
+@keyframes floatShape {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  33%      { transform: translate(18px, -26px) rotate(120deg); }
+  66%      { transform: translate(-14px, 14px) rotate(240deg); }
+}
+.hero::before, .hero::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+.hero::before {
+  width: 90px; height: 90px; top: 16%; left: 46%;
+  border-radius: 50%;
+  border: 2px solid rgba(196, 114, 127, 0.3);
+  animation: floatShape 11s ease-in-out infinite;
+}
+.hero::after {
+  width: 46px; height: 46px; bottom: 14%; right: 40%;
+  border-radius: 14px;
+  background: rgba(196, 114, 127, 0.18);
+  animation: floatShape 14s ease-in-out infinite reverse;
+}
+
+/* Blobs : mouvement plus ample */
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(40px, -40px) scale(1.15); }
+  66%      { transform: translate(-30px, 20px) scale(0.95); }
+}
+
+/* Respect de prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .site-nav, .nav-links > a, .nav-cta.btn-pill-fill, .nav-cta.btn-pill-fill::before,
+  .logo-mark span, .hero::before, .hero::after, .hero-photo::after,
+  .hero .btn-pill-fill::before, .hero .btn-pill-fill svg,
+  .glass-link .arrow-btn svg, .hero .hero-title .accent {
+    animation: none !important;
+  }
+  .hero-role::after { animation: none; width: 100%; }
+}
+/* =========================================================
+   PROJETS : rose mat 
+   ========================================================= */
+
+/* Fond de la section */
+#projets {
+  background:
+    radial-gradient(circle at 90% 10%, #f3d9dd 0, transparent 40%),
+    radial-gradient(circle at 5% 90%, #f6e4e7 0, transparent 38%),
+    var(--rose-pale);
+}
+
+/* Titre */
+#projets .eyebrow { color: var(--rose); }
+
+/* Cartes */
+.project-card:hover {
+  box-shadow: 0 22px 50px rgba(196, 114, 127, 0.22);
+  border-color: rgba(196, 114, 127, 0.45);
+}
+.project-card:focus-visible { outline-color: rgba(196, 114, 127, 0.5); }
+.project-card { box-shadow: 0 10px 30px rgba(168, 90, 103, 0.08); }
+
+.project-thumb { background: linear-gradient(135deg, #f3d9dd, #fbf0f2); }
+.project-thumb::after {
+  background: linear-gradient(180deg, transparent 55%, rgba(168, 90, 103, 0.25));
+}
+.thumb-fallback { color: var(--rose); }
+
+.project-name { color: var(--rose-dark); }
+.project-foot { border-top-color: rgba(196, 114, 127, 0.2); }
+.gh-link:hover { color: var(--rose); }
+.see-more { color: var(--rose); }
+
+/* Technologies (cartes + fenêtre) */
+.project-info .tech-chip,
+.project-text .tech-chip {
+  background: var(--rose-soft);
+  color: var(--rose-dark);
+}
+
+/* Fenêtre de détails */
+.project-modal .modal-content { border-color: rgba(196, 114, 127, 0.25); }
+.project-label { color: var(--rose); }
+.project-visual img { box-shadow: 0 25px 60px rgba(168, 90, 103, 0.25); }
+
+.modal-close {
+  border-color: rgba(196, 114, 127, 0.35);
+  color: var(--rose);
+}
+.modal-close:hover { background: var(--rose); color: #fff; }
+
+.project-modal .btn-pill-fill {
+  background: linear-gradient(135deg, var(--rose-dark), var(--rose));
+  box-shadow: 0 10px 22px rgba(196, 114, 127, 0.28);
+}
+.project-modal .btn-pill-line { border-color: rgba(196, 114, 127, 0.4); }
+.project-modal .btn-pill-line:hover {
+  border-color: var(--rose);
+  box-shadow: 0 10px 22px rgba(196, 114, 127, 0.18);
+}
+/* =========================================================
+   COMPÉTENCES : rose mat (à placer en fin de fichier)
+   ========================================================= */
+
+/* Fond de la section */
+#competences {
+  background:
+    radial-gradient(circle at 8% 12%, #f3d9dd 0, transparent 40%),
+    radial-gradient(circle at 92% 88%, #f6e4e7 0, transparent 38%),
+    var(--rose-pale);
+}
+
+/* Titre */
+#competences .eyebrow { color: var(--rose); }
+
+/* Filtres */
+#competences .filter-pill { border-color: rgba(196, 114, 127, 0.35); }
+#competences .filter-pill span {
+  background: var(--rose-soft);
+  color: var(--rose-dark);
+}
+#competences .filter-pill.active {
+  background: linear-gradient(135deg, var(--rose-dark), var(--rose));
+  box-shadow: 0 8px 18px rgba(196, 114, 127, 0.3);
+}
+#competences .filter-pill.active span {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+/* Cartes de catégorie */
+#competences .skill-card { box-shadow: 0 10px 30px rgba(168, 90, 103, 0.08); }
+#competences .skill-card:hover { box-shadow: 0 22px 50px rgba(196, 114, 127, 0.22); }
+
+#competences .skill-ico {
+  background: linear-gradient(135deg, var(--rose-dark), var(--rose));
+  box-shadow: 0 8px 18px rgba(196, 114, 127, 0.3);
+}
+
+/* Fond des barres de progression */
+#competences .skill-track { background: var(--rose-soft); }
+/* =========================================================
+   EXPÉRIENCES, FORMATIONS, CONTACT : rose mat (fin de fichier)
+   ========================================================= */
+
+/* ---------- Fonds de section ---------- */
+#experiences {
+  background:
+    radial-gradient(circle at 92% 10%, #f3d9dd 0, transparent 40%),
+    radial-gradient(circle at 6% 90%, #f6e4e7 0, transparent 38%),
+    var(--rose-pale);
+}
+#formations {
+  background:
+    radial-gradient(circle at 8% 12%, #f3d9dd 0, transparent 40%),
+    radial-gradient(circle at 92% 88%, #f6e4e7 0, transparent 38%),
+    var(--rose-pale);
+}
+#contact {
+  background:
+    radial-gradient(circle at 90% 8%, #f3d9dd 0, transparent 40%),
+    radial-gradient(circle at 5% 92%, #f6e4e7 0, transparent 38%),
+    var(--rose-pale);
+}
+
+/* ---------- Titres ---------- */
+#experiences .eyebrow,
+#formations .eyebrow,
+#contact .eyebrow { color: var(--rose); }
+
+/* ---------- Pastilles (année, "En cours", technologies) ---------- */
+#experiences .year-pill,
+#formations .year-pill,
+#experiences .tech-chip {
+  background: var(--rose-soft);
+  color: var(--rose-dark);
+}
+
+/* =========== EXPÉRIENCES =========== */
+.timeline::before {
+  background: linear-gradient(var(--rose), var(--rose-soft));
+}
+.timeline-item::before { border-color: var(--rose); }
+
+#experiences .soft-card { box-shadow: 0 10px 30px rgba(168, 90, 103, 0.08); }
+
+/* Nom de l'entreprise (couleur définie en style inline, d'où !important) */
+#experiences .soft-card .fw-semibold { color: var(--rose-dark) !important; }
+
+/* =========== FORMATIONS =========== */
+#formations .edu-card { box-shadow: 0 10px 30px rgba(168, 90, 103, 0.08); }
+#formations .edu-card:hover { box-shadow: 0 22px 50px rgba(196, 114, 127, 0.22); }
+
+#formations .edu-card::before {
+  background: radial-gradient(circle, rgba(196, 114, 127, 0.22), transparent 70%);
+}
+#formations .edu-card::after {
+  background: linear-gradient(90deg, var(--rose-dark), #e4a0ab);
+}
+
+#formations .edu-ico {
+  background: linear-gradient(135deg, var(--rose-dark), var(--rose));
+  box-shadow: 0 8px 18px rgba(196, 114, 127, 0.3);
+}
+#formations .edu-school svg { color: var(--rose); }
+#formations .edu-level {
+  border-color: rgba(196, 114, 127, 0.35);
+  color: var(--rose-dark);
+}
+
+/* =========== CONTACT =========== */
+#contact .contact-card { box-shadow: 0 8px 24px rgba(168, 90, 103, 0.07); }
+#contact a.contact-card:hover {
+  border-color: rgba(196, 114, 127, 0.45);
+  box-shadow: 0 16px 36px rgba(196, 114, 127, 0.2);
+}
+#contact .contact-ico {
+  background: var(--rose-soft);
+  color: var(--rose);
+}
+#contact a.contact-card:hover .contact-ico {
+  color: #fff;
+  background: linear-gradient(135deg, var(--rose-dark), var(--rose));
+}
+#contact .contact-arrow { color: var(--rose); }
+
+/* Carte du formulaire */
+#contact .contact-form-card { box-shadow: 0 16px 44px rgba(168, 90, 103, 0.1); }
+#contact .contact-form-card::before {
+  background: radial-gradient(circle, rgba(196, 114, 127, 0.22), transparent 70%);
+}
+
+/* Champs */
+#contact .field > svg { color: var(--rose); }
+#contact .form-control { border-color: rgba(196, 114, 127, 0.25); }
+#contact .form-control:focus {
+  border-color: var(--rose);
+  box-shadow: 0 0 0 0.2rem rgba(196, 114, 127, 0.18);
+}
+
+/* Boutons */
+#contact .btn-pill-fill {
+  background: linear-gradient(135deg, var(--rose-dark), var(--rose));
+  box-shadow: 0 10px 22px rgba(196, 114, 127, 0.28);
+}
+#contact .btn-pill-line { border-color: rgba(196, 114, 127, 0.4); }
+#contact .btn-pill-line:hover {
+  border-color: var(--rose);
+  box-shadow: 0 10px 22px rgba(196, 114, 127, 0.18);
+}
+/* =========================================================
+   FOOTER : rose mat (à placer en fin de fichier)
+   ========================================================= */
+
+/* Fond et bordure du haut */
+.site-footer {
+  background:
+    radial-gradient(circle at 12% 20%, #f3d9dd 0, transparent 45%),
+    radial-gradient(circle at 90% 90%, #f6e4e7 0, transparent 40%),
+    var(--rose-pale);
+  border-top-color: rgba(196, 114, 127, 0.25);
+}
+
+/* Icônes sociales */
+.footer-social a {
+  color: var(--rose);
+  border-color: rgba(196, 114, 127, 0.35);
+}
+.footer-social a:hover {
+  background: var(--rose);
+  border-color: var(--rose);
+  color: #fff;
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(196, 114, 127, 0.3);
+}
+
+/* Copyright */
+.footer-copy { color: var(--rose-dark); opacity: 0.8; }
+/* =========================================================
+   FONDS BLANCS (à placer en fin de fichier)
+   ========================================================= */
+
+/* Fond global du site */
+.site {
+  background: #fff;
+}
+
+/* Fond de chaque section */
+.hero,
+#projets,
+#competences,
+#experiences,
+#formations,
+#contact,
+.site-footer {
+  background: #fff;
+}
+
+/* Navbar : blanc translucide */
+.site-nav {
+  background: rgba(255, 255, 255, 0.85);
+}
+.site-nav.scrolled {
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 8px 30px rgba(168, 90, 103, 0.12);
+}
+@media (max-width: 991px) {
+  .nav-links { background: rgba(255, 255, 255, 0.97); }
 }
